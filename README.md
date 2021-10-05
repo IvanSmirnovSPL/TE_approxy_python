@@ -1,2 +1,2 @@
 # foo
-main -> test.py
+test.py square.msh
