@@ -13,7 +13,7 @@ from progress.bar import IncrementalBar
 if len(sys.argv) > 1:
     name = sys.argv[1]
 else:
-    name = 'points.txt'
+    name = 'square.msh'
 
 #function of initial conditions
 def func(p):
