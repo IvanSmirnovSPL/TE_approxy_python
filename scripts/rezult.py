@@ -16,9 +16,9 @@ class REZULT:
         T = 10
         if n % T == 0:
             plt.scatter(x, z1, label='numeric in '
-                                 + str('%.4f' % ((n - 1) / (N - 1))) + ' seconds')
+                                 + str('%.4f' % (n / (N - 1))) + ' seconds')
             plt.scatter(x, z2, label='analitic in '
-                                 + str('%.4f' % ((n - 1) / (N - 1))) + ' seconds')
+                                 + str('%.4f' % (n / (N - 1))) + ' seconds')
             plt.xlabel('x')
             plt.ylabel('function')
             plt.grid(True)

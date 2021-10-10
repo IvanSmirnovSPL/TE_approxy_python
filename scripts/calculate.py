@@ -1,15 +1,25 @@
 import iter_
 import numpy as np
 import point
-import matplotlib.pyplot as plt
+#from mpi4py import MPI
+
+
 
 #calculate new slice of time
 def make_new_d(l, tau, TREE_OF_POINTS, prev_d, coord_to_name, doc):
+
+    #comm = MPI.COMM_WORLD
+    #rank = comm.Get_rank()
+    #size = comm.Get_size()
+
     d = {}
     doc.write('----------------level----------------------' + '\n')
     for j in range(2):
         perem = 'x' if j == 0 else 'y'
         doc.write(perem + '\n')
+
+        #comm.Barrier()
+
         for p in TREE_OF_POINTS.dots:
             inter_coord = determine_coord(p, l[j], tau, j, doc)
             coef, frame, bounds = interpolate_polinom(prev_d, TREE_OF_POINTS,
@@ -17,6 +27,9 @@ def make_new_d(l, tau, TREE_OF_POINTS, prev_d, coord_to_name, doc):
             new_value = generate_new_value(inter_coord, coef, frame,
                                            doc, bounds)
             d[coord_to_name(p)] = new_value
+
+        #comm.Barrier()
+
         prev_d = d.copy()
     doc.write('-------------------------------------------' + '\n')
     return d
