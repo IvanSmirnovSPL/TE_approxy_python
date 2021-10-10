@@ -43,7 +43,7 @@ def check(q):
 
 
 def determine_coord(p, l, tau, j, doc):
-    delta = l * (tau / 2)
+    delta = l * (tau)
     if j == 0:
         q = p.x - delta
         tmp = check(q)
