@@ -1,0 +1,5 @@
+0 scale: 0.2 dots: 144 step: 8.3333e-02 time: 3.8350e+00
+1 scale: 0.1 dots: 514 step: 4.4108e-02 time: 1.1869e+01
+
+function:  
+2.076 x + 2.585
