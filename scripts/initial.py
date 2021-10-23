@@ -25,9 +25,9 @@ class IC:
         self.x = [p.x for p in self.DOTS]
         self.y = [p.y for p in self.DOTS]
 
-    def func(self, p, t=0, l=[0, 0]):
-        # r = np.sqrt((p.x) ** 2 + (p.y) ** 2)
-        return (np.cos(abs(p.x - t * l[0]) * np.pi * 0.5)) ** 2
+    def func(self, p):
+        #r = np.sqrt((p.x) ** 2 + (p.y) ** 2)
+        return (np.cos(np.sqrt(p.x**2 + p.y**2))) ** 2
 
     def coord_to_name(self, coord):
         name = str(coord.x) + ' ' + str(coord.y)

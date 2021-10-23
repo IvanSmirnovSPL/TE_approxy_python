@@ -10,21 +10,25 @@ class REZULT:
         self.err_f.write('time e1 e2 e3' + '\n')
         self.err = error.ERROR()
 
-    def draw(self, x, z1, z2, n, N):
+    def draw(self, x, y, z1, z2, n, N):
         # z1 - numeric, z2 - analitic
         # T - period of saving
         T = 10
         if n % T == 0:
-            plt.scatter(x, z1, label='numeric in '
+            for j in range(2):
+                x = x if j == 0 else y
+                name = 'x' if j == 0 else 'y'
+                plt.scatter(x, z1, label='numeric in '
                                  + str('%.4f' % (n / (N - 1))) + ' seconds')
-            plt.scatter(x, z2, label='analitic in '
+                plt.scatter(x, z2, label='analitic in '
                                  + str('%.4f' % (n / (N - 1))) + ' seconds')
-            plt.xlabel('x')
-            plt.ylabel('function')
-            plt.grid(True)
-            plt.legend()
-            plt.savefig('../rez/' + 'x_'+str(self.num)+'_'+str(n // T) + '.png')
-            plt.close()
+                plt.xlabel('x')
+                plt.ylabel('function')
+                plt.grid(True)
+                plt.legend()
+                plt.savefig('../rez/pictures/' + name + '_'
+                            + str(self.num)+'_'+str(n // T) + '.png')
+                plt.close()
 
 
     def upgrade_error(self, n, N, a, b):

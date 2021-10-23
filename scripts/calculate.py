@@ -13,10 +13,10 @@ def make_new_d(l, tau, TREE_OF_POINTS, prev_d, coord_to_name, doc):
     #size = comm.Get_size()
 
     d = {}
-    doc.write('----------------level----------------------' + '\n')
+    #doc.write('----------------level----------------------' + '\n')
     for j in range(2):
         perem = 'x' if j == 0 else 'y'
-        doc.write(perem + '\n')
+        #doc.write(perem + '\n')
 
         #comm.Barrier()
 
@@ -31,7 +31,7 @@ def make_new_d(l, tau, TREE_OF_POINTS, prev_d, coord_to_name, doc):
         #comm.Barrier()
 
         prev_d = d.copy()
-    doc.write('-------------------------------------------' + '\n')
+    #doc.write('-------------------------------------------' + '\n')
     return d
 
 
@@ -44,7 +44,7 @@ class FoR:
 #make argument in [-T /2, T/ 2] bounds
 def check(q):
     T = 2
-    q = q - (abs(q) // T) * T
+    q = q - np.sign(q) * (abs(q) // T) * T
     if abs(q) <= 1:
         rez = q
     else:
@@ -66,11 +66,11 @@ def determine_coord(p, l, tau, j, doc):
         tmp = check(q)
         inter_coord = point.Point(p.x, tmp)
 
-    doc.write('========================================================='
-              + '==================================' + '\n')
-    doc.write('point: ['+ str('%.4f'%(p.x)) +','+ str('%.4f'%(p.y))
-              + '] inter_coord: [' + str( '%.4f'%(inter_coord.x)) + ', '
-              + str('%.4f'%(inter_coord.y))  + ']' + '\n')
+    #doc.write('========================================================='
+    #          + '==================================' + '\n')
+    #doc.write('point: ['+ str('%.4f'%(p.x)) +','+ str('%.4f'%(p.y))
+    #          + '] inter_coord: [' + str( '%.4f'%(inter_coord.x)) + ', '
+    #          + str('%.4f'%(inter_coord.y))  + ']' + '\n')
 
     return inter_coord
 
@@ -129,14 +129,14 @@ def interpolate_polinom(prev_d, TREE_OF_POINTS, inter_coord, coord_to_name, doc)
             break
 
 
-    doc.write('points: ')
-    for q in data:
-         doc.write('[' + str('%.4f'%(q.x)) +  ', ' +str( '%4.f'%(q.y)) + '] ')
-    doc.write('\n')
-    doc.write('value: ')
-    for i in range(len(f)):
-        doc.write(str('%.4f'%(f[i])) + ' ')
-    doc.write('\n')
+    #doc.write('points: ')
+    #for q in data:
+    #     doc.write('[' + str('%.4f'%(q.x)) +  ', ' +str( '%4.f'%(q.y)) + '] ')
+    #doc.write('\n')
+    #doc.write('value: ')
+    #for i in range(len(f)):
+    #    doc.write(str('%.4f'%(f[i])) + ' ')
+    #doc.write('\n')
 
 
     #coef = np.linalg.solve(A, f)
@@ -155,10 +155,10 @@ def generate_new_value(inter_coord, coef, frame, doc, bounds):
         print("ERROR IN LENGTH OF COEF")
     if rez > bounds[1] or rez < bounds[0]:
         rez = bounds[1] if rez > bounds[0] else bounds[0]
-    doc.write('new_value: ' + str( "%.4f"%(rez)))
+    #doc.write('new_value: ' + str( "%.4f"%(rez)))
 
 
-    doc.write('=================================================='
-             + '=========================================')
+    #doc.write('=================================================='
+    #         + '=========================================')
 
     return rez
