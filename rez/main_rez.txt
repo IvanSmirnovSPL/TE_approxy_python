@@ -1,14 +1,11 @@
-0 scale: 0.2 dots: 144 step: 8.3333e-02 time: 4.5433
-1 scale: 0.1 dots: 514 step: 4.4108e-02 time: 13.2745
-2 scale: 0.05 dots: 1937 step: 2.2721e-02 time: 43.7541
-3 scale: 0.025 dots: 7553 step: 1.1506e-02 time: 169.5691
-4 scale: 0.0125 dots: 29977 step: 5.7757e-03 time: 675.6642
-
-function_(1/sqrt(dots)):  
-2.42 x + 3.587
+0 scale: 0.2 dots: 144 step: 8.3333e-02 time: 5.6196
+1 scale: 0.1 dots: 514 step: 4.4108e-02 time: 12.5264
+2 scale: 0.05 dots: 1937 step: 2.2721e-02 time: 40.8084
+3 scale: 0.025 dots: 7553 step: 1.1506e-02 time: 141.1834
+4 scale: 0.0125 dots: 29977 step: 5.7757e-03 time: 568.0013
 
 function_(scale):  
-2.332 x + 1.371
+1.122 x + 0.1554
 
 function_(1 / dots):  
-1.21 x + 3.587
+1.164 x + 1.217

@@ -21,7 +21,7 @@ scale = [0.2, 0.1, 0.05, 0.025, 0.0125]
 r = []
 h = []
 hh = []
-for i in range(2):
+for i in range(5):
     print(i)
     f.write(str(i) + ' scale: ' + str(scale[i]) + ' ')
     start_time = time.time()

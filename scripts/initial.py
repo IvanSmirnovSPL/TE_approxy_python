@@ -3,6 +3,7 @@ import make_points
 import tree
 import numpy as np
 
+
 # init conditions
 class IC:
     def __init__(self, l, name='../square.msh', N=51, T=1):
@@ -26,8 +27,24 @@ class IC:
         self.y = [p.y for p in self.DOTS]
 
     def func(self, p):
-        #r = np.sqrt((p.x) ** 2 + (p.y) ** 2)
-        return (np.cos(np.sqrt(p.x**2 + p.y**2))) ** 2
+        r = np.sqrt(p.x**2 + p.y**2)
+        q = max(abs(p.x), abs(p.y))
+        # smooth
+        rez_1 = (np.cos(np.sqrt(p.x ** 2 + p.y ** 2))) ** 2
+        # rough
+        # cone
+        if r >= 0.5:
+            rez_2 = 0
+        else:
+            rez_2 = 1 - 2 * r
+        # pyramid
+        rez_3 = 1 - q
+        #rough derivative
+        if q > 0.5:
+            rez_4 = 0
+        else:
+            rez_4 = 1
+        return rez_1
 
     def coord_to_name(self, coord):
         name = str(coord.x) + ' ' + str(coord.y)

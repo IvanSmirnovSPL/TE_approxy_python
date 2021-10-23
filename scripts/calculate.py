@@ -106,6 +106,8 @@ def make_matrix(prev_d, coord_to_name, points, ksi, eta):
         y = eta[i]
         if len(points) == 6:
             tmp = [x**2, x * y, y**2, x, y, 1]
+        elif len(points) == 10:
+            tmp = [x**3, y**3, x**2 * y, y**2 * x, x**2, y**2, x * y, x, y, 1]
         elif len(points) == 3:
             tmp = [x, y, 1]
         else:
@@ -149,6 +151,10 @@ def generate_new_value(inter_coord, coef, frame, doc, bounds):
     if len(coef) == 6:
         rez = coef[0] * x**2 + coef[1] * x * y + coef[2] * y**2\
               + coef[3] * x + coef[4] * y + coef[5]
+    elif len(coef) == 10:
+        rez = coef[0] * x**3 + coef[1] * y**3 + coef[2] * x**2 * y \
+              + coef[3] * y**2 * x + coef[4] * x**2 + coef[5] * y**2 \
+              + coef[6] * x * y + coef[7] * x * coef[8] * y + coef[9]
     elif len(coef) == 3:
         rez = coef[0] * x + coef[1] * y + coef[2]
     else:

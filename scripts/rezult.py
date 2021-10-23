@@ -22,7 +22,7 @@ class REZULT:
                                  + str('%.4f' % (n / (N - 1))) + ' seconds')
                 plt.scatter(x, z2, label='analitic in '
                                  + str('%.4f' % (n / (N - 1))) + ' seconds')
-                plt.xlabel('x')
+                plt.xlabel(name)
                 plt.ylabel('function')
                 plt.grid(True)
                 plt.legend()
