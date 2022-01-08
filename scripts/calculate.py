@@ -1,47 +1,40 @@
 import iter_
 import numpy as np
 import point
-#from mpi4py import MPI
 
 
 
-#calculate new slice of time
+
+
+# calculate new slice of time
+
+
 def make_new_d(l, tau, TREE_OF_POINTS, prev_d, coord_to_name, doc):
-
-    #comm = MPI.COMM_WORLD
-    #rank = comm.Get_rank()
-    #size = comm.Get_size()
-
+    SoT = point.slice_of_time()
     d = {}
-    #doc.write('----------------level----------------------' + '\n')
     for j in range(2):
         perem = 'x' if j == 0 else 'y'
-        #doc.write(perem + '\n')
-
-        #comm.Barrier()
 
         for p in TREE_OF_POINTS.dots:
             inter_coord = determine_coord(p, l[j], tau, j, doc)
             coef, frame, bounds = interpolate_polinom(prev_d, TREE_OF_POINTS,
-                                          inter_coord, coord_to_name, doc)
+                                                      inter_coord, coord_to_name, doc)
             new_value = generate_new_value(inter_coord, coef, frame,
                                            doc, bounds)
             d[coord_to_name(p)] = new_value
-
-        #comm.Barrier()
-
+        SoT.update(j, d)
         prev_d = d.copy()
-    #doc.write('-------------------------------------------' + '\n')
     return d
 
 
-#frame of reference structure
+# frame of reference structure
 class FoR:
     def __init__(self, x_0, y_0, x_del, y_del):
         self.trans = point.Point(x_0, y_0)
         self.comp = point.Point(x_del, y_del)
 
-#make argument in [-T /2, T/ 2] bounds
+
+# make argument in [-T /2, T/ 2] bounds
 def check(q):
     T = 2
     q = q - np.sign(q) * (abs(q) // T) * T
@@ -66,15 +59,12 @@ def determine_coord(p, l, tau, j, doc):
         tmp = check(q)
         inter_coord = point.Point(p.x, tmp)
 
-    #doc.write('========================================================='
-    #          + '==================================' + '\n')
-    #doc.write('point: ['+ str('%.4f'%(p.x)) +','+ str('%.4f'%(p.y))
-    #          + '] inter_coord: [' + str( '%.4f'%(inter_coord.x)) + ', '
-    #          + str('%.4f'%(inter_coord.y))  + ']' + '\n')
-
     return inter_coord
 
-#make local frame
+
+# make local frame
+
+
 def make_frame(points):
     x_ = [points[i].x for i in range(len(points))]
     y_ = [points[i].y for i in range(len(points))]
@@ -87,7 +77,10 @@ def make_frame(points):
     frame = FoR(x_0, y_0, x_del, y_del)
     return frame
 
-#translation coordinates in local frame
+
+# translation coordinates in local frame
+
+
 def normalization(points):
     frame = make_frame(points)
     ksi = []
@@ -97,7 +90,10 @@ def normalization(points):
         eta.append((points[i].y - frame.trans.y) / frame.comp.y)
     return ksi, eta, frame
 
-#matrix for system of interpolate coef
+
+# matrix for system of interpolate coef
+
+
 def make_matrix(prev_d, coord_to_name, points, ksi, eta):
     A = []
     f = []
@@ -105,9 +101,9 @@ def make_matrix(prev_d, coord_to_name, points, ksi, eta):
         x = ksi[i]
         y = eta[i]
         if len(points) == 6:
-            tmp = [x**2, x * y, y**2, x, y, 1]
+            tmp = [x ** 2, x * y, y ** 2, x, y, 1]
         elif len(points) == 10:
-            tmp = [x**3, y**3, x**2 * y, y**2 * x, x**2, y**2, x * y, x, y, 1]
+            tmp = [x ** 3, y ** 3, x ** 2 * y, y ** 2 * x, x ** 2, y ** 2, x * y, x, y, 1]
         elif len(points) == 3:
             tmp = [x, y, 1]
         else:
@@ -130,30 +126,20 @@ def interpolate_polinom(prev_d, TREE_OF_POINTS, inter_coord, coord_to_name, doc)
             data = u
             break
 
-
-    #doc.write('points: ')
-    #for q in data:
-    #     doc.write('[' + str('%.4f'%(q.x)) +  ', ' +str( '%4.f'%(q.y)) + '] ')
-    #doc.write('\n')
-    #doc.write('value: ')
-    #for i in range(len(f)):
-    #    doc.write(str('%.4f'%(f[i])) + ' ')
-    #doc.write('\n')
-
-
-    #coef = np.linalg.solve(A, f)
-    coef = np.linalg.lstsq(A,f, rcond = - 1)[0]
+    # coef = np.linalg.solve(A, f)
+    coef = np.linalg.lstsq(A, f, rcond=- 1)[0]
     return coef, frame, [min(f), max(f)]
-    
+
+
 def generate_new_value(inter_coord, coef, frame, doc, bounds):
     x = (inter_coord.x - frame.trans.x) / frame.comp.x
     y = (inter_coord.y - frame.trans.y) / frame.comp.y
     if len(coef) == 6:
-        rez = coef[0] * x**2 + coef[1] * x * y + coef[2] * y**2\
+        rez = coef[0] * x ** 2 + coef[1] * x * y + coef[2] * y ** 2 \
               + coef[3] * x + coef[4] * y + coef[5]
     elif len(coef) == 10:
-        rez = coef[0] * x**3 + coef[1] * y**3 + coef[2] * x**2 * y \
-              + coef[3] * y**2 * x + coef[4] * x**2 + coef[5] * y**2 \
+        rez = coef[0] * x ** 3 + coef[1] * y ** 3 + coef[2] * x ** 2 * y \
+              + coef[3] * y ** 2 * x + coef[4] * x ** 2 + coef[5] * y ** 2 \
               + coef[6] * x * y + coef[7] * x * coef[8] * y + coef[9]
     elif len(coef) == 3:
         rez = coef[0] * x + coef[1] * y + coef[2]
@@ -161,10 +147,5 @@ def generate_new_value(inter_coord, coef, frame, doc, bounds):
         print("ERROR IN LENGTH OF COEF")
     if rez > bounds[1] or rez < bounds[0]:
         rez = bounds[1] if rez > bounds[0] else bounds[0]
-    #doc.write('new_value: ' + str( "%.4f"%(rez)))
-
-
-    #doc.write('=================================================='
-    #         + '=========================================')
 
     return rez

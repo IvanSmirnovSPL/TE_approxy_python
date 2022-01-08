@@ -1,6 +1,7 @@
 import error
 import matplotlib.pyplot as plt
 
+
 class REZULT:
 
     def __init__(self, num):
@@ -16,27 +17,28 @@ class REZULT:
         T = 10
         if n % T == 0:
             for j in range(2):
-                x = x if j == 0 else y
+                abscissa = x if j == 0 else y
                 name = 'x' if j == 0 else 'y'
-                plt.scatter(x, z1, label='numeric in '
-                                 + str('%.4f' % (n / (N - 1))) + ' seconds')
-                plt.scatter(x, z2, label='analitic in '
-                                 + str('%.4f' % (n / (N - 1))) + ' seconds')
+                plt.scatter(abscissa, z1, label='numeric in '
+                                                + str('%.4f' % (n / (N - 1))) + ' seconds')
+                plt.scatter(abscissa, z2, label='analytic in '
+                                                + str('%.4f' % (n / (N - 1))) + ' seconds')
                 plt.xlabel(name)
                 plt.ylabel('function')
                 plt.grid(True)
                 plt.legend()
                 plt.savefig('../rez/pictures/' + name + '_'
-                            + str(self.num)+'_'+str(n // T) + '.png')
+                            + str(self.num) + '_' + str(n // T) + '.png')
                 plt.close()
 
-
-    def upgrade_error(self, n, N, a, b):
+    def upgrade_error(self, n, N, a, b, j):
+        abscissa = 'x' if j == 0 else 'y'
         self.err.calc_error(a, b)
+        self.err_f.write(abscissa + '\n')
         self.err_f.write(str("{:10.4e}".format((n - 1) / (N - 1))) + ' '
-                + str("{:10.4e}".format(self.err.e1[-1])) + ' '
-                + str("{:10.4e}".format(self.err.e2[-1])) + ' '
-                + str("{:10.4e}".format(self.err.e3[-1])) + '\n')
+                         + str("{:10.4e}".format(self.err.e1[-1])) + ' '
+                         + str("{:10.4e}".format(self.err.e2[-1])) + ' '
+                         + str("{:10.4e}".format(self.err.e3[-1])) + '\n')
 
     def finish(self):
         self.doc.close()

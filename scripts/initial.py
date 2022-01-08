@@ -6,7 +6,7 @@ import numpy as np
 
 # init conditions
 class IC:
-    def __init__(self, l, name='../square.msh', N=51, T=1):
+    def __init__(self, l, name='../square.msh', N=51, T = 1):
         self.l = l
         self.N = N
         self.T = T
@@ -30,7 +30,8 @@ class IC:
         r = np.sqrt(p.x**2 + p.y**2)
         q = max(abs(p.x), abs(p.y))
         # smooth
-        rez_1 = (np.cos(np.sqrt(p.x ** 2 + p.y ** 2))) ** 2
+        rez_1 = (np.cos(np.sqrt(p.x ** 2 + p.y ** 2) * 0.5 * np.pi)) ** 2 if np.sqrt(p.x ** 2 + p.y ** 2) < 1 else 0
+        rez_1_1 = (np.cos(np.sqrt(p.x**2) * 0.5 * np.pi)) ** 2
         # rough
         # cone
         if r >= 0.5:
