@@ -1,30 +1,32 @@
-import iter_
+from scripts.precalculation import iter_
 import numpy as np
-import point
-
-
-
+from scripts.utils import point
 
 
 # calculate new slice of time
-
-
-def make_new_d(l, tau, TREE_OF_POINTS, prev_d, coord_to_name, doc):
+def make_new_d(l, tau, TREE_OF_POINTS, prev_d, coord_to_name, DOTS, doc, n):
     SoT = point.slice_of_time()
     d = {}
     for j in range(2):
         perem = 'x' if j == 0 else 'y'
-
-        for p in TREE_OF_POINTS.dots:
-            inter_coord = determine_coord(p, l[j], tau, j, doc)
+        if n < 3:
+            doc.write2file('Slice №' + str(n) + perem + '\n')
+        for p in DOTS:
+            inter_coord = determine_coord(p, l[j], tau, j)
             coef, frame, bounds = interpolate_polinom(prev_d, TREE_OF_POINTS,
-                                                      inter_coord, coord_to_name, doc)
-            new_value = generate_new_value(inter_coord, coef, frame,
-                                           doc, bounds)
+                                                      inter_coord, coord_to_name)
+            new_value = generate_new_value(inter_coord, coef, frame, bounds)
             d[coord_to_name(p)] = new_value
-        SoT.update(j, d)
+            if n < 3:
+                doc.write2file('[' + str("%.4f" % p.x) + ', '
+                         + str("%.4f" % p.y) + '] -> ' +
+                         str("%.4f" % new_value) + '\n')
+        if j == 0:
+            SoT.x_cart = d
+        else:
+            SoT.y_cart = d
         prev_d = d.copy()
-    return d
+    return SoT
 
 
 # frame of reference structure
@@ -48,7 +50,7 @@ def check(q):
     return rez
 
 
-def determine_coord(p, l, tau, j, doc):
+def determine_coord(p, l, tau, j):
     delta = l * (tau)
     if j == 0:
         q = p.x - delta
@@ -115,7 +117,7 @@ def make_matrix(prev_d, coord_to_name, points, ksi, eta):
     return A, f
 
 
-def interpolate_polinom(prev_d, TREE_OF_POINTS, inter_coord, coord_to_name, doc):
+def interpolate_polinom(prev_d, TREE_OF_POINTS, inter_coord, coord_to_name):
     points, dist = TREE_OF_POINTS.search(inter_coord, 10)
     variants = iter_.generate_variants(points, 6)
     for u in variants:
@@ -131,7 +133,7 @@ def interpolate_polinom(prev_d, TREE_OF_POINTS, inter_coord, coord_to_name, doc)
     return coef, frame, [min(f), max(f)]
 
 
-def generate_new_value(inter_coord, coef, frame, doc, bounds):
+def generate_new_value(inter_coord, coef, frame, bounds):
     x = (inter_coord.x - frame.trans.x) / frame.comp.x
     y = (inter_coord.y - frame.trans.y) / frame.comp.y
     if len(coef) == 6:

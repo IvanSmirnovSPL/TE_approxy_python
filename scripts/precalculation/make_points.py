@@ -1,4 +1,5 @@
-import point
+from scripts.utils import point
+
 
 class POINTS:
 

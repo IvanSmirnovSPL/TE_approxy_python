@@ -1,6 +1,6 @@
 
 from sklearn.neighbors import KDTree
-import point
+
 
 class TREE:
 
