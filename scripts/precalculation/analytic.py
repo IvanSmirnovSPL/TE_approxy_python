@@ -17,11 +17,11 @@ def check(q):
     return rez
 
 
-def get_solve(tau, N, func, DOTS, lamb, PATHS):
-    w = FILE(Path(PATHS.files_path, 'analytic.txt'))
+def get_solve(tau, N, func, DOTS, lamb, PATHS, num):
+    w = FILE(Path(PATHS.files_path, 'analytic' + str(num) +'.txt'))
     data = []
     for n in range(N):
-        if 3 > n > 0:
+        if n > 0:
             w.write2file('Slice №' + str(n) + ' _x_ ' '\n')
         carta = point.CARTA()
         t = n * tau
@@ -33,13 +33,13 @@ def get_solve(tau, N, func, DOTS, lamb, PATHS):
             y = p.y - lamb[1] * t_prev
             y_ = check(y)
             tmp.append(func(point.Point(x_, y_)))
-            if 3 > n > 0:
+            if n > 0:
                 w.write2file('[' + str("%.4f" % p.x) + ', '
                          + str("%.4f" % p.y) + '] -> ' +
-                         str("%.4f" % (func(point.Point(x_, y_)))) + '\n')
+                         str(func(point.Point(x_, y_))) + '\n')
         carta.x_cart = tmp
         tmp = []
-        if 3 > n > 0:
+        if n > 0:
             w.write2file('Slice №' + str(n) + ' _y_ ' '\n')
         for p in DOTS:
             x = p.x - lamb[0] * t
@@ -47,10 +47,10 @@ def get_solve(tau, N, func, DOTS, lamb, PATHS):
             y = p.y - lamb[1] * t
             y_ = check(y)
             tmp.append(func(point.Point(x_, y_)))
-            if 3 > n > 0:
+            if n > 0:
                 w.write2file('[' + str("%.4f" % p.x) + ', '
                          + str("%.4f" % p.y) + '] -> '
-                         + str("%.4f" % (func(point.Point(x_, y_)))) + '\n')
+                         + str(func(point.Point(x_, y_))) + '\n')
         carta.y_cart = tmp
         data.append(carta)
 

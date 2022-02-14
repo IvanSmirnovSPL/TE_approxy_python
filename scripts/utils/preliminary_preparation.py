@@ -7,8 +7,8 @@ from pathlib import Path
 
 # parameters of grid
 scale = [0.2, 0.1, 0.05, 0.025, 0.0125]
-grids_num = 2
-lamb = [-10, 10]
+grids_num = 3
+lamb = [-1, 10]
 
 
 def transport_function(p):

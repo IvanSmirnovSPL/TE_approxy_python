@@ -8,19 +8,19 @@ def make_new_d(l, tau, TREE_OF_POINTS, prev_d, coord_to_name, DOTS, doc, n):
     SoT = point.slice_of_time()
     d = {}
     for j in range(2):
-        perem = 'x' if j == 0 else 'y'
-        if n < 3:
-            doc.write2file('Slice №' + str(n) + perem + '\n')
+        perem = '_x_' if j == 0 else '_y_'
+        if True:
+            doc.write2file('Slice №' + str(n) + ' _x_ ' '\n')
         for p in DOTS:
             inter_coord = determine_coord(p, l[j], tau, j)
             coef, frame, bounds = interpolate_polinom(prev_d, TREE_OF_POINTS,
                                                       inter_coord, coord_to_name)
             new_value = generate_new_value(inter_coord, coef, frame, bounds)
             d[coord_to_name(p)] = new_value
-            if n < 3:
+            if True:
                 doc.write2file('[' + str("%.4f" % p.x) + ', '
                          + str("%.4f" % p.y) + '] -> ' +
-                         str("%.4f" % new_value) + '\n')
+                         str(new_value) + '\n')
         if j == 0:
             SoT.x_cart = d
         else:

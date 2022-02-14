@@ -7,7 +7,8 @@ import numpy as np
 
 # init conditions
 class IC:
-    def __init__(self, name, PATHS, N=51, T=1):
+    def __init__(self, name, PATHS, num, N=51, T=1):
+        self.num = num
         self.PATHS = PATHS
         self.lamb = lamb
         self.N = N
@@ -16,6 +17,7 @@ class IC:
         self.get_points(name)
         self.make_start()
         self.get_analytic_solve()
+
 
     # generate x and y parts of grid from grid.msh file
     def get_points(self, name):
@@ -41,11 +43,11 @@ class IC:
 
     def get_analytic_solve(self):
         self.dots_for_calc = self.DOTS
-        q = FILE(Path(self.PATHS.files_path, 'dots_for_calc.txt'))
+        q = FILE(Path(self.PATHS.files_path, 'dots_for_calc' + str(self.num)+'.txt'))
         for j in self.dots_for_calc:
             q.write2file(str(j.x) + ' ' + str(j.y) + '\n')
         self.a_data = analytic.get_solve(self.tau, self.N,
-                                         transport_function, self.DOTS, self.lamb, self.PATHS)
+                        transport_function, self.DOTS, self.lamb, self.PATHS, self.num)
 
     # make z coordinate from tree
     def make_z(self, d):

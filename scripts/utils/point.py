@@ -22,9 +22,15 @@ class CARTA:
 # for showing results
 class residual:
     def __init__(self):
-        self.e1 = []
-        self.e2 = []
-        self.e3 = []
+        self.e1 = Point()
+        self.e1.x = []
+        self.e1.y = []
+        self.e2 = Point()
+        self.e2.x = []
+        self.e2.y = []
+        self.e3 = Point()
+        self.e3.x = []
+        self.e3.y = []
 
 
 # to make and write to file
