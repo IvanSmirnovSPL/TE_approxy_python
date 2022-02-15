@@ -44,3 +44,4 @@ class FILE:
         f = open(self.path, 'a')
         f.write(string)
         f.close()
+

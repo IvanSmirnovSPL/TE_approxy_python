@@ -7,7 +7,7 @@ from pathlib import Path
 
 # parameters of grid
 scale = [0.2, 0.1, 0.05, 0.025, 0.0125]
-grids_num = 3
+grids_num = 2
 lamb = [-1, 10]
 
 
@@ -50,8 +50,12 @@ class PATHS:
         shutil.rmtree(self.rez_path, ignore_errors=True)
         os.mkdir(self.rez_path)
         os.mkdir(self.pictures_path)
-        self.grid_path = []
+        self.grid_pic_path = []
+        self.grid_file_path = []
         for j in range(grids_num):
             os.mkdir(Path(self.pictures_path, 'grid_' + str(j)))
-            self.grid_path.append(Path(self.pictures_path, 'grid_' + str(j)))
+            self.grid_pic_path.append(Path(self.pictures_path, 'grid_' + str(j)))
         os.mkdir(self.files_path)
+        for j in range(grids_num):
+            os.mkdir(Path(self.files_path, 'grid_' + str(j)))
+            self.grid_file_path.append(Path(self.files_path, 'grid_' + str(j)))

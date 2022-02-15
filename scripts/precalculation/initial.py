@@ -43,7 +43,7 @@ class IC:
 
     def get_analytic_solve(self):
         self.dots_for_calc = self.DOTS
-        q = FILE(Path(self.PATHS.files_path, 'dots_for_calc' + str(self.num)+'.txt'))
+        q = FILE(Path(self.PATHS.grid_file_path[self.num], 'dots_for_calc' + str(self.num)+'.txt'))
         for j in self.dots_for_calc:
             q.write2file(str(j.x) + ' ' + str(j.y) + '\n')
         self.a_data = analytic.get_solve(self.tau, self.N,

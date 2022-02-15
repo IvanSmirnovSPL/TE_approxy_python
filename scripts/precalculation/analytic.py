@@ -18,7 +18,7 @@ def check(q):
 
 
 def get_solve(tau, N, func, DOTS, lamb, PATHS, num):
-    w = FILE(Path(PATHS.files_path, 'analytic' + str(num) +'.txt'))
+    w = FILE(Path(PATHS.grid_file_path[num], 'analytic' + str(num) +'.txt'))
     data = []
     for n in range(N):
         if n > 0:

@@ -4,7 +4,8 @@ from scripts.utils import point
 
 
 # calculate new slice of time
-def make_new_d(l, tau, TREE_OF_POINTS, prev_d, coord_to_name, DOTS, doc, n):
+def make_new_d(l, tau, TREE_OF_POINTS, prev_d, coord_to_name, DOTS, doc, n, rez):
+    rez.new_der_slice()
     SoT = point.slice_of_time()
     d = {}
     for j in range(2):
@@ -15,7 +16,7 @@ def make_new_d(l, tau, TREE_OF_POINTS, prev_d, coord_to_name, DOTS, doc, n):
             inter_coord = determine_coord(p, l[j], tau, j)
             coef, frame, bounds = interpolate_polinom(prev_d, TREE_OF_POINTS,
                                                       inter_coord, coord_to_name)
-            new_value = generate_new_value(inter_coord, coef, frame, bounds)
+            new_value = generate_new_value(inter_coord, coef, frame, bounds, rez)
             d[coord_to_name(p)] = new_value
             if True:
                 doc.write2file('[' + str("%.4f" % p.x) + ', '
@@ -133,9 +134,10 @@ def interpolate_polinom(prev_d, TREE_OF_POINTS, inter_coord, coord_to_name):
     return coef, frame, [min(f), max(f)]
 
 
-def generate_new_value(inter_coord, coef, frame, bounds):
+def generate_new_value(inter_coord, coef, frame, bounds, result):
     x = (inter_coord.x - frame.trans.x) / frame.comp.x
     y = (inter_coord.y - frame.trans.y) / frame.comp.y
+    result.update_slice(coef[3], 2 * coef[0], coef[4], 2 * coef[2])
     if len(coef) == 6:
         rez = coef[0] * x ** 2 + coef[1] * x * y + coef[2] * y ** 2 \
               + coef[3] * x + coef[4] * y + coef[5]

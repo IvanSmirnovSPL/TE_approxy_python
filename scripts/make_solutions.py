@@ -21,7 +21,8 @@ def calculate_z0(ic):
 
 
 def make_data(num, PATHS):
-    doc = FILE(Path(PATHS.files_path, 'doc' + str(num) + '.txt'))
+    doc = FILE(Path(PATHS.grid_file_path[num], 'doc' + str(num) + '.txt'))
+    # der = FILE(Path(PATHS.files_path, 'derivative' + str(num) + '.txt'))
     name = PATHS.meshes_path[num]
     ic = initial.IC(name, PATHS, num)
     analytic_solution = ic.a_data
@@ -31,7 +32,7 @@ def make_data(num, PATHS):
     z = calculate_z0(ic)
 
     vizual.make_model(ic.x, ic.y, z.y_cart, analytic_solution[0].y_cart,
-                      Path(PATHS.grid_path[num], 'start' + str(num) + '.png'))
+                      Path(PATHS.grid_pic_path[num], 'start' + str(num) + '.png'))
 
     # calculate
     rez = rezult.REZULT(num, PATHS)
@@ -39,20 +40,21 @@ def make_data(num, PATHS):
         rez.draw(ic.x, ic.y, z.y_cart, analytic_solution[n - 1].y_cart, n - 1, ic.N)
 
         SoT = calculate.make_new_d(ic.lamb, ic.tau, ic.TREE_OF_POINTS,
-                                   SoT.y_cart, ic.coord_to_name, ic.dots_for_calc, doc, n)
+                                   SoT.y_cart, ic.coord_to_name, ic.dots_for_calc, doc, n, rez)
         z = calculate_z(SoT, ic)
         rez.upgrade_error(n, ic.N,
-                          Path(PATHS.files_path, 'analytic' + str(num) + '.txt'),
-                          Path(PATHS.files_path, 'doc' + str(num) + '.txt'))
+                          Path(PATHS.grid_file_path[num], 'analytic' + str(num) + '.txt'),
+                          Path(PATHS.grid_file_path[num], 'doc' + str(num) + '.txt'))
+        rez.upgrade_der(n, ic.N)
 
     vizual.make_model(ic.x, ic.y, z.y_cart, analytic_solution[-1].y_cart,
-                      Path(PATHS.grid_path[num], 'finish' + str(num) + '.png'))
+                      Path(PATHS.grid_pic_path[num], 'finish' + str(num) + '.png'))
 
     rez.draw(ic.x, ic.y, z.y_cart, analytic_solution[-1].y_cart, ic.N - 1, ic.N)
 
     rez.upgrade_error(ic.N - 1, ic.N,
-                      Path(PATHS.files_path, 'analytic' + str(num) + '.txt'),
-                      Path(PATHS.files_path, 'doc' + str(num) + '.txt'))
+                      Path(PATHS.grid_file_path[num], 'analytic' + str(num) + '.txt'),
+                      Path(PATHS.grid_file_path[num], 'doc' + str(num) + '.txt'))
 
     return rez.err.e1.x[-1], rez.err.e2.x[-1], rez.err.e3.x[-1], rez.err.e1.y[-1], rez.err.e2.y[-1], rez.err.e3.y[
         -1], len(ic.DOTS)

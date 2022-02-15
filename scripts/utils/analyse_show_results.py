@@ -43,7 +43,7 @@ class Showing_results:
         fp, residuals, rank, sv, rcond = np.polyfit(self.h_dots,
                                                     discrepancy, 1, full=True)
         func1 = sp.poly1d(fp)
-        self.main_rez.write2file('=====================e' + bar +
+        self.main_rez.write2file('=====================e ' + bar + ' '
                                  + str(num + 1) + '=======================')
         self.main_rez.write2file('\n' + 'function_(1 / sqrt(dots)): '
                                  + str(func1) + '\n')
