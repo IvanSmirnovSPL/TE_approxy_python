@@ -71,16 +71,18 @@ class REZULT:
         self.der_slices.x[-1].d2 = max(cur_der_x.d2, self.der_slices.x[-1].d2)
         self.der_slices.x[-1].der_ratio = max(cur_der_x.der_ratio,
                                               self.der_slices.x[-1].der_ratio)
-        self.avg_ratio.x.append(cur_der_x.der_ratio)
-        self.avg_der_answer.x[-1] = (self.avg_der_answer.x[-1] * (len(self.avg_ratio.x) - 1)
-                                     + self.avg_ratio.x[-1]) / len(self.avg_ratio.x)
+        if cur_der_x.der_ratio >= 0:
+            self.avg_ratio.x.append(cur_der_x.der_ratio)
+            self.avg_der_answer.x[-1] = (self.avg_der_answer.x[-1] * (len(self.avg_ratio.x) - 1)
+                                         + self.avg_ratio.x[-1]) / len(self.avg_ratio.x)
         self.der_slices.y[-1].d1 = min(cur_der_y.d1, self.der_slices.y[-1].d1)
         self.der_slices.y[-1].d2 = max(cur_der_y.d2, self.der_slices.y[-1].d2)
         self.der_slices.y[-1].der_ratio = max(cur_der_y.der_ratio,
                                               self.der_slices.y[-1].der_ratio)
-        self.avg_ratio.y.append(cur_der_y.der_ratio)
-        self.avg_der_answer.y[-1] = (self.avg_der_answer.y[-1] * (len(self.avg_ratio.y) - 1)
-                                     + self.avg_ratio.y[-1]) / len(self.avg_ratio.y)
+        if cur_der_y.der_ratio >= 0:
+            self.avg_ratio.y.append(cur_der_y.der_ratio)
+            self.avg_der_answer.y[-1] = (self.avg_der_answer.y[-1] * (len(self.avg_ratio.y) - 1)
+                                         + self.avg_ratio.y[-1]) / len(self.avg_ratio.y)
 
 
     def upgrade_der(self, n, N):

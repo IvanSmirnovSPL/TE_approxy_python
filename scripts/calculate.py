@@ -1,6 +1,8 @@
 from scripts.precalculation import iter_
 import numpy as np
 from scripts.utils import point
+from scripts.utils.point import Point
+from  scripts.utils.point import point_with_data
 
 
 # calculate new slice of time
@@ -8,6 +10,9 @@ def make_new_d(l, tau, TREE_OF_POINTS, prev_d, coord_to_name, DOTS, doc, n, rez)
     rez.new_der_slice()
     SoT = point.slice_of_time()
     d = {}
+    points_information = Point()
+    points_information.x = []
+    points_information.y = []
     for j in range(2):
         perem = '_x_' if j == 0 else '_y_'
         if True:
@@ -16,7 +21,11 @@ def make_new_d(l, tau, TREE_OF_POINTS, prev_d, coord_to_name, DOTS, doc, n, rez)
             inter_coord = determine_coord(p, l[j], tau, j)
             coef, frame, bounds = interpolate_polinom(prev_d, TREE_OF_POINTS,
                                                       inter_coord, coord_to_name)
-            new_value = generate_new_value(inter_coord, coef, frame, bounds, rez)
+            new_value, inf_point = generate_new_value(inter_coord, coef, frame, bounds, rez, p)
+            if j == 0:
+                points_information.x.append(inf_point)
+            else:
+                points_information.y.append(inf_point)
             d[coord_to_name(p)] = new_value
             if True:
                 doc.write2file('[' + str("%.4f" % p.x) + ', '
@@ -27,7 +36,7 @@ def make_new_d(l, tau, TREE_OF_POINTS, prev_d, coord_to_name, DOTS, doc, n, rez)
         else:
             SoT.y_cart = d
         prev_d = d.copy()
-    return SoT
+    return SoT, points_information
 
 
 # frame of reference structure
@@ -134,10 +143,11 @@ def interpolate_polinom(prev_d, TREE_OF_POINTS, inter_coord, coord_to_name):
     return coef, frame, [min(f), max(f)]
 
 
-def generate_new_value(inter_coord, coef, frame, bounds, result):
+def generate_new_value(inter_coord, coef, frame, bounds, result, p):
     x = (inter_coord.x - frame.trans.x) / frame.comp.x
     y = (inter_coord.y - frame.trans.y) / frame.comp.y
     result.update_slice(coef[3], 2 * coef[0], coef[4], 2 * coef[2])
+    inf_point = point_with_data(p.x, p.y, coef[3], coef[4], 2 * coef[0], 2 * coef[2])
     if len(coef) == 6:
         rez = coef[0] * x ** 2 + coef[1] * x * y + coef[2] * y ** 2 \
               + coef[3] * x + coef[4] * y + coef[5]
@@ -152,4 +162,4 @@ def generate_new_value(inter_coord, coef, frame, bounds, result):
     if rez > bounds[1] or rez < bounds[0]:
         rez = bounds[1] if rez > bounds[0] else bounds[0]
 
-    return rez
+    return rez, inf_point

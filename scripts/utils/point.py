@@ -33,6 +33,16 @@ class residual:
         self.e3.y = []
 
 
+class point_with_data:
+    def __init__(self, x, y, d1x, d1y, d2x, d2y):
+        self.x = x
+        self.y = y
+        self.d1x = d1x
+        self.d1y = d1y
+        self.d2x = d2x
+        self.d2y = d2y
+
+
 # to make and write to file
 class FILE:
     def __init__(self, path):
@@ -44,4 +54,3 @@ class FILE:
         f = open(self.path, 'a')
         f.write(string)
         f.close()
-
