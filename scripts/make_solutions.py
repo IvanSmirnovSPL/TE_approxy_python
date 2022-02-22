@@ -5,6 +5,7 @@ from scripts.utils.point import slice_of_time, CARTA
 from pathlib import Path
 from scripts.utils.point import FILE
 from scripts.results_during_calculation.make_vtk import export_data
+from tqdm import tqdm
 
 
 def calculate_z(SoT, ic):
@@ -37,7 +38,7 @@ def make_data(num, PATHS):
 
     # calculate
     rez = rezult.REZULT(num, PATHS)
-    for n in range(1, ic.N):
+    for n in tqdm(range(1, ic.N)):
         rez.draw(ic.x, ic.y, z.y_cart, analytic_solution[n - 1].y_cart, n - 1, ic.N)
 
         SoT, points_information = calculate.make_new_d(ic.lamb, ic.tau, ic.TREE_OF_POINTS,
