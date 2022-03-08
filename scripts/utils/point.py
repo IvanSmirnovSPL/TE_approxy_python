@@ -41,6 +41,8 @@ class point_with_data:
         self.d1y = d1y
         self.d2x = d2x
         self.d2y = d2y
+        self.ratio_x = None
+        self.ratio_y = None
 
 
 # to make and write to file

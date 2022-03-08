@@ -23,7 +23,7 @@ def make_new_d(l, tau, TREE_OF_POINTS, prev_d, coord_to_name, DOTS, doc, n, rez)
                                                       inter_coord, coord_to_name, 2)
             x, y, coef, bounds, inf_point = check_der(inter_coord, coef, frame, bounds,
                                                       n, rez, p, coord_to_name,
-                                                      prev_d, TREE_OF_POINTS)
+                                                      prev_d, TREE_OF_POINTS, l)
             new_value = generate_new_value(x, y, coef, bounds)
             if j == 0:
                 points_information.x.append(inf_point)
@@ -129,7 +129,7 @@ def make_matrix(prev_d, coord_to_name, points, ksi, eta):
 
 
 def interpolate_polinom(prev_d, TREE_OF_POINTS, inter_coord, coord_to_name, order):
-    points, dist = TREE_OF_POINTS.search(inter_coord, 10)
+    points, dist = TREE_OF_POINTS.search(inter_coord, 5 * order)
     variants = iter_.generate_variants(points, 3 * order)
     for u in variants:
         ksi, eta, frame = normalization(list(u))
@@ -161,8 +161,17 @@ def generate_new_value(x, y, coef, bounds):
     return rez
 
 
+def check_rough(inf, n, q):
+    if n < 7:
+        second_der = abs(inf.d2x) > 1e-4 or abs(inf.d2y) > 1e-4
+        ratio = (0.5 + n / 6 < abs(inf.ratio_x) < 15 - 5 / 6) or (
+                (0.5 + n / 6) / q < abs(inf.ratio_y) < (15 - 5 / 6) / q)
+        return second_der or ratio
+    return False
+
+
 def check_der(inter_coord, coef, frame, bounds, n, result,
-              p, coord_to_name, prev_d, TREE_OF_POINTS):
+              p, coord_to_name, prev_d, TREE_OF_POINTS, l):
     x = (inter_coord.x - frame.trans.x) / frame.comp.x
     y = (inter_coord.y - frame.trans.y) / frame.comp.y
     result.update_slice(coef[3], 2 * coef[0], coef[4], 2 * coef[2])
@@ -174,8 +183,7 @@ def check_der(inter_coord, coef, frame, bounds, n, result,
     inf_point.ratio_x = abs(inf_point.d2x / inf_point.d1x) if inf_point.d1x != 0 else -1.
     inf_point.ratio_y = abs(inf_point.d2y / inf_point.d1y) if inf_point.d1y != 0 else -1.
 
-    #if n < 10 and (abs(inf_point.d2x) > 1.3 or abs(inf_point.d2y) > 1.3
-    #              or inf_point.ratio_x > 2 or inf_point.ratio_y > 2):
+    #if check_rough(inf_point, n, abs(l[1] / l[0]) if l[0] != 0 else 1):
     if False:
         coef, frame, bounds = interpolate_polinom(prev_d, TREE_OF_POINTS,
                                                   inter_coord, coord_to_name, 1)

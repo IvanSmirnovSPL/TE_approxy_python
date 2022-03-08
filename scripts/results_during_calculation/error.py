@@ -20,8 +20,8 @@ class ERROR:
         for i in range(tmp):
             error.append(abs(a[i] - b[i]))
         e1 = max(error)
-        e2 = sum(error)
-        e3 = np.sqrt(sum(list(map(lambda t: t**2, error))))
+        e2 = sum(error) / len(error)
+        e3 = np.sqrt(sum(list(map(lambda t: t**2, error)))) / len(error)
         if j == 'x':
             self.e1.x.append(e1)
             self.e2.x.append(e2)
