@@ -11,4 +11,5 @@ def export_data(points, z,  name):
                       'd2x': np.array([p.d2x for p in points]),
                       'd1y': np.array([p.d1x for p in points]),
                       'd2y': np.array([p.d2x for p in points]),
-                      'smth': np.array([abs(p.d2x / p.d1x) if p.d1x != 0 else -1.0 for p in points])})
+                      'ratio_x': np.array([p.ratio_x for p in points]),
+                      'ratio_y': np.array([p.ratio_y for p in points])})

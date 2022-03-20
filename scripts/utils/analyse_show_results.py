@@ -26,7 +26,7 @@ class Showing_results:
 
     def add_grid(self, tmp):
         self.main_rez.write2file('dots: ' + str(tmp[-1]) + ' step: '
-                                 + str("{:10.4e}".format(1 / np.sqrt(tmp[1]))) + ' ')
+                                 + str("{:10.4e}".format(1 / np.sqrt(tmp[-1]))) + ' ')
         self.r.e1.x.append(np.log(tmp[0]))
         self.r.e2.x.append(np.log(tmp[1]))
         self.r.e3.x.append(np.log(tmp[2]))

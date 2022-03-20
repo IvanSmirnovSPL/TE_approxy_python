@@ -1,5 +1,5 @@
 from scripts.precalculation import tree, make_points, analytic
-from scripts.utils.preliminary_preparation import lamb, transport_function
+from scripts.utils.preliminary_preparation import lamb
 from scripts.utils.point import FILE
 from pathlib import Path
 import numpy as np
@@ -17,7 +17,6 @@ class IC:
         self.get_points(name)
         self.make_start()
         self.get_analytic_solve()
-
 
     # generate x and y parts of grid from grid.msh file
     def get_points(self, name):
@@ -39,15 +38,15 @@ class IC:
     def make_start(self):
         self.i_data = {}
         for p in self.DOTS:
-            self.i_data[self.coord_to_name(p)] = transport_function(p)
+            self.i_data[self.coord_to_name(p)] = self.PATHS.transport_function(p)
 
     def get_analytic_solve(self):
         self.dots_for_calc = self.DOTS
-        q = FILE(Path(self.PATHS.grid_file_path[self.num], 'dots_for_calc' + str(self.num)+'.txt'))
+        q = FILE(Path(self.PATHS.grid_file_path[self.num], 'dots_for_calc' + str(self.num) + '.txt'))
         for j in self.dots_for_calc:
             q.write2file(str(j.x) + ' ' + str(j.y) + '\n')
         self.a_data = analytic.get_solve(self.tau, self.N,
-                        transport_function, self.DOTS, self.lamb, self.PATHS, self.num)
+                                         self.PATHS.transport_function, self.DOTS, self.lamb, self.PATHS, self.num)
 
     # make z coordinate from tree
     def make_z(self, d):
