@@ -1,4 +1,4 @@
-from scripts.utils import point
+from utils import point
 
 
 class POINTS:

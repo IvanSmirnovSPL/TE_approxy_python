@@ -1,8 +1,8 @@
-from scripts.precalculation import iter_
+from precalculation import iter_
 import numpy as np
-from scripts.utils import point
-from scripts.utils.point import Point
-from scripts.utils.point import point_with_data
+from utils import point
+from utils.point import Point
+from utils.point import point_with_data
 
 
 # calculate new slice of time

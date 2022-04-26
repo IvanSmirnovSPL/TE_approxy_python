@@ -1,10 +1,10 @@
-from scripts.precalculation import initial
+from precalculation import initial
 import calculate
-from scripts.results_during_calculation import vizual, rezult
-from scripts.utils.point import slice_of_time, CARTA
+from results_during_calculation import vizual, rezult
+from utils.point import slice_of_time, CARTA
 from pathlib import Path
-from scripts.utils.point import FILE
-from scripts.results_during_calculation.make_vtk import export_data
+from utils.point import FILE
+from results_during_calculation.make_vtk import export_data
 from tqdm import tqdm
 
 

@@ -3,8 +3,8 @@ import numpy as np
 import time
 import matplotlib.pyplot as plt
 from pathlib import Path
-from scripts.utils.point import residual
-from scripts.utils.point import FILE
+from utils.point import residual
+from utils.point import FILE
 
 
 class Showing_results:
@@ -69,22 +69,25 @@ class Showing_results:
 
     # show results
     def show_main_graphics(self):
-        for i in range(3):
-            for j in range(2):
+        f, ax = plt.subplots(2, 1, sharex=True)
+        plt.subplots_adjust(wspace=0.3, hspace=0.3)
+        for i in range(1, 3):
+            for j in range(1, 2):
                 bar = 'x' if j == 0 else 'y'
                 residual, name = self.switch_residual_norm(i, self.r, j)
-                plt.clf()
+                #plt.clf()
                 func_1, func_2 = self.get_func(residual, i, bar)
-
-                plt.scatter(self.h_dots, residual, c='b', label=r'$\frac{1}{\sqrt{dots}}$')
-                plt.scatter(self.h_dots_scale, residual, c='g', label=r'$\frac{1}{scale}$')
-                plt.plot(self.h_dots, list(map(lambda t: t * func_1[1] + func_1[0],
-                                               self.h_dots)), '--', c='b', label=func_1)
-                plt.plot(self.h_dots_scale,
-                         list(map(lambda t: t * func_2[1] + func_2[0],
-                                  self.h_dots_scale)), '--', c='g', label=func_2)
-                plt.legend()
-                plt.xlabel(r'$\ln h_{dots}$')
-                plt.ylabel(r'$\ln r$')
-                plt.grid(True)
-                plt.savefig(Path(self.PATHS.pictures_path, name), dpi=1000)
+                ax[i - 1].scatter(self.h_dots, residual, marker='s', c='r', label=r'$\frac{1}{\sqrt{dots}}$')
+                #plt.scatter(self.h_dots_scale, residual, c='g', label=r'$\frac{1}{scale}$')
+                ax[i - 1].plot(self.h_dots, list(map(lambda t: t * func_1[1] + func_1[0],
+                                               self.h_dots)), '-', c='b', label=func_1)
+                #plt.plot(self.h_dots_scale,
+                #         list(map(lambda t: t * func_2[1] + func_2[0],
+                #                  self.h_dots_scale)), '--', c='g', label=func_2)
+                ax[i - 1].legend()
+                ax[i - 1].set_title('$e_' + str(i) + '$ norm')
+                ax[i - 1].set_xlabel(r'$\ln h_{dots}$')
+                ax[i - 1].set_ylabel(r'$\ln r$')
+                ax[i - 1].grid(True)
+        name = 'residual.png'
+        plt.savefig(Path(self.PATHS.pictures_path, name), dpi=1000)

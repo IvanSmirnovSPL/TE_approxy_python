@@ -1,6 +1,6 @@
-from scripts.precalculation import tree, make_points, analytic
-from scripts.utils.preliminary_preparation import lamb
-from scripts.utils.point import FILE
+from precalculation import tree, make_points, analytic
+from utils.preliminary_preparation import lamb
+from utils.point import FILE
 from pathlib import Path
 import numpy as np
 

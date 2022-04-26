@@ -1,6 +1,6 @@
 import make_solutions
-from scripts.utils import preliminary_preparation
-from scripts.utils.analyse_show_results import Showing_results
+from utils import preliminary_preparation
+from utils.analyse_show_results import Showing_results
 
 figures = ['fig_1', 'fig_2', 'fig_3', 'fig_4', 'wave', 'cone', 'cube']
 
@@ -13,7 +13,7 @@ for figure in figures[1:2]:
     results = Showing_results(scale, PATHS)
 
     # main calculation
-    for i in range(3, 6):
+    for i in range(0, 2):
         results.new_grid(i)
         tmp = make_solutions.make_data(i, PATHS)
         results.add_grid(tmp)
