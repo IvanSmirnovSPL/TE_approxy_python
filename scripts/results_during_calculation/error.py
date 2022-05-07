@@ -1,5 +1,5 @@
 import numpy as np
-from scripts.utils.point import Point
+from utils.point import Point
 
 
 class ERROR:

@@ -16,6 +16,8 @@ class PATHS:
         # Get home directory
         self.figure = figure
         self.dir_path = pathlib.Path.cwd()
+        self.dir_path = Path(self.dir_path, 'scripts')
+        print(self.dir_path)
         self.exp_path = Path(self.dir_path.parent, 'exp')
         self.rez_path = Path(self.dir_path.parent, 'rez_' + figure)
         self.files_path = Path(self.dir_path.parent, 'rez_' + figure, 'files')

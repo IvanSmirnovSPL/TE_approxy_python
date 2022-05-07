@@ -1,5 +1,5 @@
-from scripts.utils import point
-from scripts.utils.point import FILE
+from utils import point
+from utils.point import FILE
 import numpy as np
 from pathlib import Path
 

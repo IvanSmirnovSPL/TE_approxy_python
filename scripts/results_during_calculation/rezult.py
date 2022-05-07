@@ -1,7 +1,7 @@
-from scripts.results_during_calculation import error
+from results_during_calculation import error
 import matplotlib.pyplot as plt
-from scripts.utils.point import FILE
-from scripts.utils.point import Point
+from utils.point import FILE
+from utils.point import Point
 from pathlib import Path
 
 
